@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+
+
+</body>
+
+</html>
+<script type="module">
+
+    import navbar from './components/navbar.js'
+
+    navbar().then((res) => {
+
+        document.body.innerHTML = res;
+
+    }).catch((err) => {
+        console.log(err);
+    })
+
+</script>
+<script type="text/javascript">
+
+    var timerId;
+
+    function throttleFunction() {
+
+
+        if (timerId) {
+
+            return false;
+
+        }
+
+        timerId = setTimeout(() => {
+
+            main();
+
+            timerId = undefined;
+
+        }, 1000);
+
+        // console.log('timerId:', timerId)
+
+    }
+
+    async function main() {
+
+        let dataObject = await search();
+
+        let { meals } = dataObject;
+        // console.log('meals:', meals)
+
+        append(meals);
+
+    }
+
+    async function search() {
+
+        let q = document.getElementById("search").value;
+
+        if (q.length <= 2) {
+
+            return false;
+
+        }
+
+        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${q}`)
+
+        let data = await res.json();
+        // console.log('data:', data)
+
+        return data;
+
+    }
+
+    function append(dataArray) {
+
+        let append_div = document.getElementById("appendDiv");
+
+        append_div.innerHTML = "";
+
+        dataArray.forEach(({ strMeal }) => {
+            let div = document.createElement("div");
+            div.setAttribute("class", "appendElement")
+            let hr = document.createElement("hr");
+            div.innerHTML = strMeal;
+
+            append_div.append(div, hr);
+        })
+
+
+    }
+
+    var timerId1;
+
+        function appendFunction() {
+
+
+            if (timerId1) {
+
+                return false;
+
+            }
+
+            timerId1 = setTimeout(() => {
+
+                main1();
+
+                timerId1 = undefined;
+
+            }, 1000);
+
+            // console.log('timerId1:', timerId1)
+
+        }
+
+        async function main1() {
+
+            let dataObject = await search1();
+
+            let { meals } = dataObject;
+            // console.log('meals:', meals)
+
+            append1(meals);
+
+        }
+
+        async function search1() {
+
+            let res = await fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+
+            let data = await res.json();
+            // console.log('data:', data)
+
+            return data;
+
+        }
+
+        function append1(dataArray) {
+        console.log('dataArray:', dataArray)
+
+            dataArray.forEach(({ strMeal, strCategory, strInstructions, strMealThumb, strSource, strIngredient1, strIngredient2, strIngredient3, strIngredient4, strIngredient5}) => {
+            
+            console.log('strMeal:', strMeal)
+            console.log('strCategory:', strCategory)
+            console.log('strInstructions:', strInstructions)
+            console.log('strMealThumb:', strMealThumb)
+            console.log('strSource:', strSource)
+            console.log('strIngredient1:', strIngredient1)
+            console.log('strIngredient2:', strIngredient2)
+            console.log('strIngredient3:', strIngredient3)
+            console.log('strIngredient4:', strIngredient4)
+            console.log('strIngredient5:', strIngredient5)
+
+                let div = document.getElementById('main');
+
+                let block1 = document.createElement('div');
+
+                let img = document.createElement('img');
+                img.setAttribute('id','mealImage')
+                img.src = strMealThumb;
+
+                block1.append(img);
+
+                let block2 = document.createElement('div');
+
+                let name = document.createElement('div');
+                name.setAttribute('id', 'mealName');
+                name.innerHTML = strMeal;
+                
+                let category = document.createElement('div');
+                category.setAttribute('id', 'mealCategory');
+                category.innerHTML = strCategory;
+
+                let ingre = document.createElement('h2');
+                ingre.setAttribute('id', 'mealIngredients');
+                ingre.innerHTML = "Ingredients";
+
+                let ingredients = document.createElement('ul');
+                ingredients.innerHTML = `<li>${strIngredient1}</li><li>${strIngredient2}</li><li>${strIngredient3}</li><li>${strIngredient4}</li><li>${strIngredient5}</li>`
+
+                
+                let inst = document.createElement('h2');
+                inst.setAttribute('id', 'mealIngredients');
+                inst.innerHTML = "Instructions";
+
+                let instructions = document.createElement('div');
+                instructions.setAttribute('id', 'mealInstructions');
+                instructions.innerHTML = `${strInstructions}`;
+
+                let sour = document.createElement('h4');
+                sour.setAttribute('id', 'mealIngredients');
+                sour.innerHTML = "Want to know more?";
+
+                let source = document.createElement('div');
+                source.setAttribute('id', 'mealSource');
+                source.innerHTML = `<a href="${strSource}">${strSource}</a>`;
+
+                block2.append(name, category, ingre, ingredients, inst, instructions, sour, source);
+
+                div.append(block1, block2);
+            })
+        }
+
+        appendFunction();
+
+</script>
